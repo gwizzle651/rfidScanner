@@ -10,10 +10,10 @@ detecting = False
 while True:
     reader.init()
     (stat, tag_type) = reader.request(reader.REQIDL)
-    
+
     # Get date time info
     (year, month, day, weekday, hours, minutes, seconds, subseconds) = rtc.datetime()
-    
+
     # If we were not previously detecting and we are now detecting then print data and mark previous detection
     if (detecting == False and stat == reader.OK):
         detecting = True
