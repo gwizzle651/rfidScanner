@@ -1,6 +1,33 @@
 from mfrc522 import MFRC522
 from time import sleep
 from machine import RTC
+import network
+import usocket as socket
+import secrets # learn how to use
+
+ssid = "placeholder"
+password = "placeholder"
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect(ssid, password)
+
+connectionTimeout = 10
+
+while connectionTimeout > 0:
+    if wlan.status() >= 3:
+        break
+    connectionTimeout -= 1
+    print(f"Connection attempts remaining: {connectionTimeout}")
+    sleep(1)
+
+if wlan.status() != 3:
+    raise RuntimeError(f"Failed to establish a network connection to {ssid}")
+else:
+    print("Connetion successful")
+    networkInformation = wlan.ifconfig()
+    print(f"IP address: {networkInformation[0]}")
+
+print(wlan.isconnected())
 
 reader = MFRC522(spi_id=0,sck=6,miso=4,mosi=7,cs=5,rst=22)
 rtc = RTC()
